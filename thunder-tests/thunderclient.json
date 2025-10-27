@@ -1,0 +1,21 @@
+[
+  {
+    "_id": "fbd94398-ae35-478f-8b18-af4aa2210685",
+    "colId": "d99a0d08-0642-41d4-bc87-7bb33484a2f6",
+    "containerId": "",
+    "name": "whatsapp",
+    "url": " https://rayford-lithoid-francie.ngrok-free.dev/api/callback/whatsapp",
+    "method": "POST",
+    "sortNum": 10000,
+    "created": "2025-10-26T10:42:05.437Z",
+    "modified": "2025-10-26T10:50:01.315Z",
+    "headers": [
+      {
+        "name": "Accept",
+        "value": "application/json"
+      }
+    ],
+    "params": [],
+    "tests": []
+  }
+]
