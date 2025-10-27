@@ -44,11 +44,6 @@ class MessagingService
                 ]
             );
 
-            Log::info('SMS sent successfully', [
-                'to' => $to,
-                'sid' => $result->sid
-            ]);
-
             // Save to database
             Message::create([
                 'platform' => 'sms',
@@ -73,18 +68,6 @@ class MessagingService
             ];
         } catch (TwilioException $e) {
             Log::error('Twilio SMS Error: ' . $e->getMessage());
-
-            // Save failed message
-            Message::create([
-                'platform' => 'sms',
-                'direction' => 'outbound',
-                'from_number' => config('services.twilio.sms_from'),
-                'to_number' => $to,
-                'message_body' => $message,
-                'status' => 'failed',
-                'error_code' => (string)$e->getCode(),
-                'error_message' => $e->getMessage(),
-            ]);
 
             return [
                 'success' => false,
@@ -149,18 +132,6 @@ class MessagingService
         } catch (TwilioException $e) {
             Log::error('Twilio WhatsApp Error: ' . $e->getMessage());
 
-            // Save failed message
-            Message::create([
-                'platform' => 'whatsapp',
-                'direction' => 'outbound',
-                'from_number' => config('services.twilio.whatsapp_from'),
-                'to_number' => $to,
-                'message_body' => $message,
-                'status' => 'failed',
-                'error_code' => (string)$e->getCode(),
-                'error_message' => $e->getMessage(),
-            ]);
-
             return [
                 'success' => false,
                 'message' => 'Failed to send WhatsApp message: ' . $e->getMessage(),
@@ -224,19 +195,7 @@ class MessagingService
             ];
         } catch (TwilioException $e) {
             Log::error('Twilio Messenger Error: ' . $e->getMessage());
-
-            // Save failed message
-            Message::create([
-                'platform' => 'messenger',
-                'direction' => 'outbound',
-                'from_number' => config('services.twilio.messenger_from'),
-                'to_number' => $to,
-                'message_body' => $message,
-                'status' => 'failed',
-                'error_code' => (string)$e->getCode(),
-                'error_message' => $e->getMessage(),
-            ]);
-
+            
             return [
                 'success' => false,
                 'message' => 'Failed to send Messenger message: ' . $e->getMessage(),
@@ -316,17 +275,6 @@ class MessagingService
             }
 
             Log::error('Telegram API Error: ' . $errorMessage);
-
-            // Save failed message
-            Message::create([
-                'platform' => 'telegram',
-                'direction' => 'outbound',
-                'from_number' => 'bot',
-                'to_number' => $chatId,
-                'message_body' => $message,
-                'status' => 'failed',
-                'error_message' => $errorMessage,
-            ]);
 
             return [
                 'success' => false,
